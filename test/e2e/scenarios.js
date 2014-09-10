@@ -3,12 +3,13 @@
 /* http://docs.angularjs.org/guide/dev_guide.e2e-testing */
 
 describe('PhoneCat App', function() {
- it('should redirect index.html to index.html#/phones', function() {
+
+  it('should redirect index.html to index.html#/phones', function() {
     browser.get('app/index.html');
     browser.getLocationAbsUrl().then(function(url) {
         expect(url.split('#')[1]).toBe('/phones');
       });
-	 });
+  });
 
 
   describe('Phone list view', function() {
@@ -70,8 +71,9 @@ describe('PhoneCat App', function() {
       });
     });
   });
-  
-    describe('Phone detail view', function() {
+
+
+  describe('Phone detail view', function() {
 
     beforeEach(function() {
       browser.get('app/index.html#/phones/nexus-s');
@@ -79,16 +81,21 @@ describe('PhoneCat App', function() {
 
 
     it('should display nexus-s page', function() {
-     expect(element(by.binding('phone.name')).getText()).toBe('Nexus S');
+      expect(element(by.binding('phone.name')).getText()).toBe('Nexus S');
     });
-	
-	   it('should swap main image if a thumbnail image is clicked on', function() {
+
+
+    it('should display the first phone image as the main phone image', function() {
+      expect(element(by.css('img.phone.active')).getAttribute('src')).toMatch(/img\/phones\/nexus-s.0.jpg/);
+    });
+
+
+    it('should swap main image if a thumbnail image is clicked on', function() {
       element(by.css('.phone-thumbs li:nth-child(3) img')).click();
-      expect(element(by.css('img.phone')).getAttribute('src')).toMatch(/img\/phones\/nexus-s.2.jpg/);
+      expect(element(by.css('img.phone.active')).getAttribute('src')).toMatch(/img\/phones\/nexus-s.2.jpg/);
 
       element(by.css('.phone-thumbs li:nth-child(1) img')).click();
-      expect(element(by.css('img.phone')).getAttribute('src')).toMatch(/img\/phones\/nexus-s.0.jpg/);
+      expect(element(by.css('img.phone.active')).getAttribute('src')).toMatch(/img\/phones\/nexus-s.0.jpg/);
     });
   });
-  
 });

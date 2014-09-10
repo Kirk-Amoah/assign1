@@ -3,18 +3,28 @@
 /* jasmine specs for controllers go here */
 describe('PhoneCat controllers', function() {
 
+beforeEach(module('phonecatApp'));
+
   describe('PhoneListCtrl', function(){
     var scope, ctrl, $httpBackend;
 
-    beforeEach(module('phonecatApp'));
+    
     beforeEach(inject(function(_$httpBackend_, $rootScope, $controller) {
       $httpBackend = _$httpBackend_;
-      $httpBackend.expectGET('phones/phones.json').
-          respond([{name: 'Nexus S'}, {name: 'Motorola DROID'}]);
+        $httpBackend.expectGET('phones/xyz.json').respond({name:'phone xyz'});
 
+	  $routeParams.phoneId = 'xyz';
       scope = $rootScope.$new();
       ctrl = $controller('PhoneListCtrl', {$scope: scope});
     }));
+	
+	 it('should fetch phone detail', function() {
+      expect(scope.phone).toBeUndefined();
+      $httpBackend.flush();
+
+      expect(scope.phone).toEqual({name:'phone xyz'});
+    });
+  });
 
 
     it('should create "phones" model with 2 phones fetched from xhr', function() {
